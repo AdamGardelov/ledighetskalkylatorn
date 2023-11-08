@@ -1,0 +1,30 @@
+﻿<ErrorBoundary>
+    <ChildContent>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p role="alert">Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </ChildContent>
+    <ErrorContent Context="error">
+        <p>Something went wrong while fetching data.</p>
+        <p>Error: @error.Message</p>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    private void LogError(Exception error)
+    {
+        // Log the error message to the browser's console
+        Console.WriteLine("An error has occurred: " + error.ToString());
+
+        // You could also implement further logging here, such as sending the error details to a server-side logging service.
+    }
+}

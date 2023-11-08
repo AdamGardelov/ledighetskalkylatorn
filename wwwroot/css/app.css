@@ -1,0 +1,199 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+/* Dark theme styles */
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+/* Style the form and input elements to fit the dark theme */
+.date-picker-form {
+    display: flex;
+    justify-content: center;
+    /* Removed min-height to allow the form to size according to its content */
+    padding: 20px;
+    margin-bottom: 0; /* Keep the form close to the results container */
+}
+
+.date-picker-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.date-picker-group input[type="date"] {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+    .date-picker-group input[type="date"]:hover,
+    .date-picker-group input[type="date"]:focus {
+        background-color: #3c3c3c;
+        outline: none;
+        border-color: #555;
+    }
+
+.parent-container {
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This will center the child vertically */
+}
+
+/* Adjust button styling to fit the dark theme */
+.btn {
+    background-color: #4a76a8; /* A darker blue shade */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.red-day {
+    background-color: #554a4a;
+    color: #fff; /* Adjust text color as needed for better readability */
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-radius: 3px;
+}
+
+.work-day {
+    background-color: #2c2c2c;
+    color: #fff; /* Adjust text color as needed for better readability */
+    padding: 5px 10px;
+    margin: 5px 0;
+    border-radius: 3px;
+}
+
+    .btn:hover {
+        background-color: #5a86b8; /* A slightly lighter blue shade for hover effect */
+    }
+
+.results-container {
+    width: 600px; /* Maximum width of the box */
+    margin: 20px auto; /* Vertical margin and horizontal auto for centering */
+    padding: 20px; /* Padding inside the box */
+    background-color: #333; /* Dark background for the box */
+    color: #fff; /* Light text color for contrast */
+    border: 1px solid #444; /* Slight border for definition */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    text-align: center; /* Center text alignment */
+    margin-top: 10px; /* Reduce the top margin to bring it closer to the date pickers */
+}
+
+
+    .results-container h3 {
+        color: #adbdcc; /* A softer color for headings */
+    }
+
+
+/* Focus styles */
+h1:focus {
+    outline: none;
+}
+
+/* Link and button styles */
+a, .btn-link {
+    color: #0071c1; /* Adjust if needed for better visibility on a dark background */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Content padding */
+.content {
+    padding-top: 1.1rem;
+}
+
+/* Validation styles */
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+/* Error UI styles */
+#blazor-error-ui {
+    background: #212121; /* Dark background for the error UI */
+    color: white; /* Light text color for contrast */
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+/* Styles for the error boundary */
+.blazor-error-boundary {
+    background-color: #b32121; /* Darker red background for visibility */
+    color: white;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0.25rem;
+}
+
+/* Loading progress styles */
+.loading-progress {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    margin: 20vh auto 1rem auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0; /* Light color for the circle */
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2; /* Keep primary color for loading progress */
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+/* Loading progress text styles */
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+    color: #e0e0e0; /* Light color for the loading text */
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Loading");
+    }

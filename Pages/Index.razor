@@ -1,0 +1,81 @@
+﻿@page "/"
+@using Ledighetskalkylatorn.Services
+@using Ledighetskalkylatorn.Models
+@inject IFreedomService FreedomService
+@inject IJSRuntime JSRuntime
+
+<div class="parent-container">
+    <div class="date-picker-form">
+        <EditForm Model="@_dateRange" OnValidSubmit="@HandleValidSubmit">
+            <p>Fyll i från och tilldatum för att ta reda på antal dagar du behöver ta ledigt.</p>
+            <div class="date-picker-row">
+                <div class="date-picker-group">
+                    <InputDate @bind-Value="_dateRange.StartDate" id="startDate" class="form-control" />
+                </div>
+
+                <div class="date-picker-group">
+                    <InputDate @bind-Value="_dateRange.EndDate" id="endDate" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Beräkna</button>
+            </div>
+        </EditForm>
+    </div>
+
+
+    @if (_redDays.Any() || _workDays.Any())
+    {
+        <div class="results-container">
+
+            @if (_workDays.Any())
+            {
+                <h6>Arbetsdagar (@_workDays.Count)</h6>
+                @foreach (var day in _workDays)
+                {
+                    <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
+                }
+
+                <button @onclick="CopyWorkingDays" class="btn btn-secondary btn-sm">
+                    <span class="oi oi-document" aria-hidden="true"></span>
+                </button>
+            }
+
+            @if (_redDays.Any())
+            {
+                <h6>@_redDaysText</h6>
+                @foreach (var day in _redDays)
+                {
+                    <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                }
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    private readonly DateRangeModel _dateRange = new();
+    private List<DayOffModel> _redDays = new();
+    private List<DateTime> _workDays = new();
+    private string _redDaysText = string.Empty;
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await FreedomService.GetDaysAsync(_dateRange.StartDate, _dateRange.EndDate);
+        _redDays = result.RedDays;
+        _workDays = result.WorkDays;
+        _redDaysText = $"Lediga dagar ({_redDays.Count})";
+    }
+
+    private async Task CopyWorkingDays()
+    {
+        var workingDaysString = string.Join(Environment.NewLine, _workDays.Select(d => d.ToString("yyyy-MM-dd")));
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", workingDaysString);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _redDays = await FreedomService.GetRedDaysAsync();
+        _redDaysText = $"Röda dagar kvar {DateTime.Now.Year} ({_redDays.Count})";
+    }
+}

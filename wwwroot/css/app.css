@@ -135,6 +135,13 @@ main {
     }
 }
 
+.btn-no-max-width {
+    width: 100% !important;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+
 .red-day {
     background-color: #554a4a;
     color: #fff;
@@ -249,5 +256,5 @@ a, .btn-link {
 }
 
 .loading-progress-text:after {
-    content: var(--blazor-load-percentage-text, "Loading");
+    content: var(--blazor-load-percentage-text, "Semesterkalkylerar");
 }

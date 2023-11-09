@@ -26,12 +26,18 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-    <script>
-        Blazor.start({
-            applicationCulture: 'en-US'
-        });
-    </script>
     <script src="_framework/blazor.webassembly.js"></script>
+    <!-- blazorSaveAs JavaScript function -->
+    <script>
+        window.blazorSaveAs = function (fileName, bytesBase64) {
+            var link = document.createElement('a');
+            link.download = fileName;
+            link.href = "data:text/calendar;base64," + bytesBase64;
+            document.body.appendChild(link); // This line is required for Firefox
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </body>
 
 </html>

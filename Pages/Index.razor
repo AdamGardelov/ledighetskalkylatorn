@@ -2,7 +2,9 @@
 @using Ledighetskalkylatorn.Enums;
 @using Ledighetskalkylatorn.Services
 @using Ledighetskalkylatorn.Models
+@using System.Text;
 @inject IFreedomService FreedomService
+@inject ICalendarService CalendarService
 @inject IJSRuntime JSRuntime
 
 <div class="parent-container">
@@ -42,10 +44,10 @@
                     <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
                 }
 
-                <button @onclick="CopyWorkingDays" class="btn btn-secondary btn-sm">
-                    Kopiera 
-                    <span class="oi oi-document" aria-hidden="true"></span>
+                <button @onclick="ExportToCalendar" class="btn btn-success btn-sm btn-no-max-width">
+                    Exportera till kalender
                 </button>
+
             }
 
             @if (_redDays.Any())
@@ -102,6 +104,14 @@
     {
         var workingDaysString = string.Join(Environment.NewLine, _workDays.Select(d => d.ToString("yyyy-MM-dd")));
         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", workingDaysString);
+    }
+
+    private async Task ExportToCalendar()
+    {
+        var fileName = "LedigaDagar.ics";
+        var icsContent = await CalendarService.GenerateCalendarAsync(_workDays);
+        var bytes = Encoding.UTF8.GetBytes(icsContent);
+        await JSRuntime.InvokeVoidAsync("blazorSaveAs", fileName, Convert.ToBase64String(bytes));
     }
 
     protected override async Task OnInitializedAsync()

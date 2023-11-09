@@ -13,6 +13,7 @@ namespace Ledighetskalkylatorn
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped<IFreedomService, FreedomService>();
+            builder.Services.AddScoped<ICalendarService, CalendarService>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             await builder.Build().RunAsync();

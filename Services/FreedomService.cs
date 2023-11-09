@@ -10,7 +10,7 @@ public class FreedomService : IFreedomService
     {
         try
         {
-            if (startDate < DateTime.Now || endDate < DateTime.Now)
+            if (startDate.Date < DateTime.Now.Date || endDate.Date < DateTime.Now.Date)
             {
                 return Task.FromResult(new Result("Start eller slutdatum har redan passerat. Välj ett kommande datum &#x23F3;", MessageType.Warning));
             }

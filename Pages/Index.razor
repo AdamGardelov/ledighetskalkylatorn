@@ -38,32 +38,51 @@
 
             @if (_workDays.Any())
             {
-                <h6>Arbetsdagar att ta ledigt (@_workDays.Count) &#x1F3D6;&#xFE0F;</h6>
-                @foreach (var day in _workDays)
+                <h6>
+                    Arbetsdagar att ta ledigt (@_workDays.Count) &#x1F3D6;&#xFE0F;
+                    <button @onclick="() => showWorkDays = !showWorkDays" class="btn-minimize">&#x2013;</button>
+                </h6>
+                @if (showWorkDays)
                 {
-                    <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
+                    @foreach (var day in _workDays)
+                    {
+                        <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
+                    }
+
+                    <button @onclick="ExportToCalendar" class="btn btn-success btn-sm btn-no-max-width">
+                        Exportera till kalender
+                    </button>
                 }
-
-                <button @onclick="ExportToCalendar" class="btn btn-success btn-sm btn-no-max-width">
-                    Exportera till kalender
-                </button>
-
+                <div class="divider"></div>
             }
 
             @if (_redDays.Any())
             {
-                <h6>Röda dagar (@_redDays.Count) &#x1F389;</h6>
-                @foreach (var day in _redDays)
+                <h6>
+                    @_redDaysText &#x1F389;
+                    <button @onclick="() => showRedDays = !showRedDays" class="btn-minimize">&#x2013;</button>
+                </h6>
+                @if (showRedDays)
                 {
-                    <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                    @foreach (var day in _redDays)
+                    {
+                        <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                    }
                 }
+                <div class="divider"></div>
             }
             @if (_weekendDays.Any())
             {
-                <h6>Helgdagar (@_weekendDays.Count) &#x1F4C5;</h6>
-                @foreach (var day in _weekendDays)
+                <h6>
+                    Helgdagar (@_weekendDays.Count) &#x1F4C5;
+                    <button @onclick="() => showWeekendDays = !showWeekendDays" class="btn-minimize">&#x2013;</button>
+                </h6>
+                @if (showWeekendDays)
                 {
-                    <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                    @foreach (var day in _weekendDays)
+                    {
+                        <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                    }
                 }
             }
         </div>
@@ -79,6 +98,9 @@
     private string _redDaysText = string.Empty;
     private string _message = string.Empty;
     private string _messageType = string.Empty;
+    private bool showWorkDays = true;
+    private bool showRedDays = true;
+    private bool showWeekendDays = true;
 
     private async Task HandleValidSubmit()
     {
@@ -97,7 +119,7 @@
         _redDays = result.RedDays;
         _weekendDays = result.WeekendDays;
         _workDays = result.WorkDays;
-        _redDaysText = $"Lediga dagar ({_redDays.Count})";
+        _redDaysText = $"Röda dagar ({_redDays.Count})";
     }
 
     private async Task CopyWorkingDays()

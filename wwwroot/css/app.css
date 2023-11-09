@@ -258,3 +258,27 @@ a, .btn-link {
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Semesterkalkylerar");
 }
+
+.btn-minimize {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: larger; 
+    float: right; 
+    margin-left: auto;
+    color: white;
+    position: relative;
+    top: -10px;
+}
+
+    /* Optional: style for hover effect */
+    .btn-minimize:hover {
+        color: #aaa; /* Change color on hover */
+    }
+
+.divider {
+    height: 1px;
+    background-color: #3d3d3d;
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+}

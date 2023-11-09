@@ -1,9 +1,30 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
+<div class="page @SeasonalTheme">
     <main>
         <article>
             @Body
         </article>
     </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year - Semesterkalkylatorn.</p>
+        </div>
+    </footer>
 </div>
+
+@code {
+    private string SeasonalTheme => GetSeasonalTheme();
+
+    private string GetSeasonalTheme()
+    {
+        var month = DateTime.Now.Month;
+        return month switch
+        {
+            6 or 7 or 8 => "summer-theme",
+            9 or 10 or 11 => "autumn-theme",
+            12 or 1 or 2 => "winter-theme",
+            _ => "default-theme"
+        };
+    }
+}

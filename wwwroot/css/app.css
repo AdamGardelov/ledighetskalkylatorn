@@ -75,7 +75,7 @@ main {
 }
 
 .btn {
-    background-color: #4a76a8;
+    background-color: var(--btn-color, #a6421b);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -86,9 +86,9 @@ main {
     height: 46px;
 }
 
-.btn:hover {
-    background-color: #5a86b8;
-}
+    .btn:hover {
+        background-color: var(--btn-hover-color);
+    }
 
 .results-container {
     width: 100%;
@@ -141,6 +141,7 @@ main {
     width: 100% !important;
     margin-bottom: 10px;
     margin-top: 10px;
+    font-size: 16px;
 }
 
 
@@ -277,3 +278,33 @@ a, .btn-link {
     .btn-minimize:hover {
         color: #aaa; /* Change color on hover */
     }
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    color: #1c1d1e;
+}
+
+.default-theme {
+    --btn-color: #2b4a6b;
+    --btn-hover-color: #3c6382;
+}
+
+/* Summer theme */
+.summer-theme {
+    --btn-color: #248330;
+    --btn-hover-color: #2ca840;
+}
+
+/* Autumn theme */
+.autumn-theme {
+    --btn-color: #b15b1c;
+    --btn-hover-color: #d06f24;
+}
+
+/* Winter theme */
+.winter-theme {
+    --btn-color: #f73232;
+    --btn-hover-color: #ff4747;
+}

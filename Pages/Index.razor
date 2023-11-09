@@ -32,57 +32,54 @@
         </div>
     }
 
-    @if (_redDays.Any() || _workDays.Any())
+    @if (_workDays.Any())
     {
         <div class="results-container">
-
-            @if (_workDays.Any())
+            <h6>
+                Arbetsdagar att ta ledigt (@_workDays.Count) &#x1F3D6;&#xFE0F;
+                <button @onclick="() => showWorkDays = !showWorkDays" class="btn-minimize">&#x2013;</button>
+            </h6>
+            @if (showWorkDays)
             {
-                <h6>
-                    Arbetsdagar att ta ledigt (@_workDays.Count) &#x1F3D6;&#xFE0F;
-                    <button @onclick="() => showWorkDays = !showWorkDays" class="btn-minimize">&#x2013;</button>
-                </h6>
-                @if (showWorkDays)
+                @foreach (var day in _workDays)
                 {
-                    @foreach (var day in _workDays)
-                    {
-                        <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
-                    }
-
-                    <button @onclick="ExportToCalendar" class="btn btn-success btn-sm btn-no-max-width">
-                        Exportera till kalender
-                    </button>
+                    <p class="work-day">@day.ToString("yyyy-MM-dd")</p>
                 }
-                <div class="divider"></div>
-            }
 
-            @if (_redDays.Any())
-            {
-                <h6>
-                    @_redDaysText &#x1F389;
-                    <button @onclick="() => showRedDays = !showRedDays" class="btn-minimize">&#x2013;</button>
-                </h6>
-                @if (showRedDays)
-                {
-                    @foreach (var day in _redDays)
-                    {
-                        <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
-                    }
-                }
-                <div class="divider"></div>
+                <button @onclick="ExportToCalendar" class="btn btn-success btn-sm btn-no-max-width">
+                    Exportera till kalender
+                </button>
             }
-            @if (_weekendDays.Any())
+        </div>
+    }
+    @if (_redDays.Any())
+    {
+        <div class="results-container">
+            <h6>
+                @_redDaysText &#x1F389;
+                <button @onclick="() => showRedDays = !showRedDays" class="btn-minimize">&#x2013;</button>
+            </h6>
+            @if (showRedDays)
             {
-                <h6>
-                    Helgdagar (@_weekendDays.Count) &#x1F4C5;
-                    <button @onclick="() => showWeekendDays = !showWeekendDays" class="btn-minimize">&#x2013;</button>
-                </h6>
-                @if (showWeekendDays)
+                @foreach (var day in _redDays)
                 {
-                    @foreach (var day in _weekendDays)
-                    {
-                        <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
-                    }
+                    <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
+                }
+            }
+        </div>
+    }
+    @if (_weekendDays.Any())
+    {
+        <div class="results-container">
+            <h6>
+                Helgdagar (@_weekendDays.Count) &#x1F4C5;
+                <button @onclick="() => showWeekendDays = !showWeekendDays" class="btn-minimize">&#x2013;</button>
+            </h6>
+            @if (showWeekendDays)
+            {
+                @foreach (var day in _weekendDays)
+                {
+                    <p class="red-day">@day.Date.ToString("yyyy-MM-dd") - @day.Description</p>
                 }
             }
         </div>

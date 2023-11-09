@@ -39,7 +39,7 @@ main {
 .date-picker-form {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 100%;
     max-width: 600px;
     box-sizing: border-box;
@@ -83,6 +83,7 @@ main {
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
+    height: 46px;
 }
 
 .btn:hover {
@@ -92,8 +93,8 @@ main {
 .results-container {
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
+    margin: 10px auto;
+    padding: 10px;
     box-sizing: border-box;
     background-color: #333;
     color: #fff;
@@ -105,6 +106,7 @@ main {
 
 .alert {
     width: 100%;
+    margin-top: 10px;
 }
 
 @media (min-width: 768px) {
@@ -127,7 +129,7 @@ main {
     }
 
     .results-container {
-        margin: 20px auto;
+        margin: 10px auto;
     }
 
     .btn {
@@ -275,10 +277,3 @@ a, .btn-link {
     .btn-minimize:hover {
         color: #aaa; /* Change color on hover */
     }
-
-.divider {
-    height: 1px;
-    background-color: #3d3d3d;
-    margin-top: 10px; 
-    margin-bottom: 10px; 
-}

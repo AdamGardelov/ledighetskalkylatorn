@@ -1,4 +1,5 @@
-﻿using Ledighetskalkylatorn.Models;
+﻿using Ledighetskalkylatorn.Enums;
+using Ledighetskalkylatorn.Models;
 using PublicHoliday;
 
 namespace Ledighetskalkylatorn.Services;
@@ -7,24 +8,55 @@ public class FreedomService : IFreedomService
 {
     public Task<Result> GetDaysAsync(DateTime startDate, DateTime endDate)
     {
-        var daysOff = new List<DayOffModel>();
-        var workingDays = new List<DateTime>();
-
-        var dateRange = GetAllDates(startDate, endDate);
-        foreach (var date in dateRange)
+        try
         {
-            if (IsDayOff(date, out var description))
+            if (startDate < DateTime.Now || endDate < DateTime.Now)
             {
-                var redDay = new DayOffModel(date, description);
-                daysOff.Add(redDay);
+                return Task.FromResult(new Result("Start eller slutdatum har redan passerat. Välj ett kommande datum &#x23F3;", MessageType.Warning));
             }
-            if (IsWorkingDay(date))
+            if (startDate > endDate)
             {
-                workingDays.Add(date);
+                return Task.FromResult(new Result("Startdatum kan inte vara efter slutdatum 🚫", MessageType.Warning));
             }
-        }
 
-        return Task.FromResult(new Result(daysOff, workingDays));
+            var dateRange = GetAllDates(startDate, endDate);
+            if (dateRange.Count > 30)
+            {
+                return Task.FromResult(new Result("Testa ett mindre datumspann &#x1F448;", MessageType.Secondary));
+            }
+
+            var redDays = new List<DayOffModel>();
+            var weekendDays = new List<DayOffModel>();
+            var workingDays = new List<DateTime>();
+            foreach (var date in dateRange)
+            {
+                if (IsWeekend(date, out var dayName))
+                {
+                    var weekend = new DayOffModel(date, dayName);
+                    weekendDays.Add(weekend);
+                }
+                else if (IsRedDay(date, out var holidayName))
+                {
+                    var redDay = new DayOffModel(date, holidayName);
+                    redDays.Add(redDay);
+                }
+                else if (IsWorkingDay(date))
+                {
+                    workingDays.Add(date);
+                }
+            }
+
+            if (!redDays.Any() && !weekendDays.Any())
+            {
+                return Task.FromResult(new Result(redDays, weekendDays, workingDays, "Din sökning innehöll tyvärr inga lediga dagar &#x1F61F;", MessageType.Secondary));
+            }
+
+            return Task.FromResult(new Result(redDays, weekendDays, workingDays));
+        }
+        catch (Exception)
+        {
+            return Task.FromResult(new Result("Något gick fel! &#x1F61F;", MessageType.Danger));
+        }
     }
 
     private List<DateTime> GetAllDates(DateTime startDate, DateTime endDate)
@@ -39,22 +71,10 @@ public class FreedomService : IFreedomService
         return range;
     }
 
-    private bool IsDayOff(DateTime date, out string description)
+    private bool IsRedDay(DateTime date, out string description)
     {
      
         description = string.Empty;
-
-        if (date.DayOfWeek == DayOfWeek.Saturday)
-        {
-            description = "Lördag";
-            return true;
-        }
-        else if(date.DayOfWeek == DayOfWeek.Sunday)
-        {
-            description = "Söndag";
-            return true;
-        }
-
         bool isHoliday = new SwedenPublicHoliday().IsPublicHoliday(date);
         if (isHoliday)
         {
@@ -70,12 +90,30 @@ public class FreedomService : IFreedomService
         return false;
     }
 
+    private bool IsWeekend(DateTime date, out string description)
+    {
+        description = string.Empty;
+
+        if (date.DayOfWeek == DayOfWeek.Saturday)
+        {
+            description = "Lördag";
+            return true;
+        }
+        else if (date.DayOfWeek == DayOfWeek.Sunday)
+        {
+            description = "Söndag";
+            return true;
+        }
+
+        return false;
+    }
+
     private static bool IsWorkingDay(DateTime date)
     {
         return new SwedenPublicHoliday().IsWorkingDay(date);
     }
 
-    public Task<List<DayOffModel>> GetRedDaysAsync()
+    public Task<List<DayOffModel>> GetDaysAsync()
     {
         var daysOff = new List<DayOffModel>();
         var holidays = new SwedenPublicHoliday().PublicHolidays(DateTime.Now.Year).Where(x => x.Date >= DateTime.Now);

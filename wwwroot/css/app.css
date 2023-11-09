@@ -103,6 +103,10 @@ main {
     text-align: center;
 }
 
+.alert {
+    width: 100%;
+}
+
 @media (min-width: 768px) {
     .parent-container {
         padding: 0;
@@ -115,16 +119,19 @@ main {
     }
 
     .date-picker-group {
-        width: auto;
+  /*      width: auto;*/
     }
 
-    .date-picker-group input[type="date"],
-    .btn {
-        width: auto;
+    .date-picker-group input[type="date"]{
+/*        width: auto;*/
     }
 
     .results-container {
         margin: 20px auto;
+    }
+
+    .btn {
+        width: 20%;
     }
 }
 
